@@ -1,15 +1,14 @@
 import { SessionOptions } from "iron-session";
 
 export interface SessionData {
-  userID : string,
-  verefiedEmail : boolean,
-  loggedIn : boolean,
+  userID: string;
+  verefiedEmail: boolean;
+  loggedIn: boolean;
 }
 
-
 export const sessionOptions: SessionOptions = {
-  password: process.env.SECRET_COOKIE_PASSWORD as string, 
-  
+  password: process.env.SECRET_COOKIE_PASSWORD as string,
+
   cookieName: "AgenticGraphSession",
 
   cookieOptions: {
@@ -21,5 +20,5 @@ export const sessionOptions: SessionOptions = {
 export const defaultSession: SessionData = {
   loggedIn: false,
   verefiedEmail: false,
-  userID: '',
+  userID: "",
 };

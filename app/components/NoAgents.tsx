@@ -1,7 +1,7 @@
-import { IconFolderCode } from "@tabler/icons-react"
-import { ArrowUpRightIcon } from "lucide-react"
+import { IconFolderCode } from "@tabler/icons-react";
+import { ArrowUpRightIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyContent,
@@ -9,7 +9,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
+} from "@/components/ui/empty";
 
 export function EmptyDemo() {
   return (
@@ -20,18 +20,16 @@ export function EmptyDemo() {
         </EmptyMedia>
         <EmptyTitle>No Agents Yet</EmptyTitle>
         <EmptyDescription>
-          You haven&apos;t created any agents yet. Get started by creating
-          your first agent.
+          You haven&apos;t created any agents yet. Get started by creating your
+          first agent.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
           <Button>Create New Agent</Button>
           <Button variant="outline">Import Agent</Button>
-          <br/>
-          <Button variant="outline">
-            Check Marketplace?
-          </Button >
+          <br />
+          <Button variant="outline">Check Marketplace?</Button>
         </div>
       </EmptyContent>
       <Button
@@ -45,6 +43,5 @@ export function EmptyDemo() {
         </a>
       </Button>
     </Empty>
-  )
+  );
 }
-
