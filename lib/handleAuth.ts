@@ -13,7 +13,7 @@ import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
 import { FirebaseError } from "firebase/app";
 
-let minPasswordLength: number = 8;
+const minPasswordLength: number = 8;
 
 export async function getSession() {
   const cookieStore = await cookies();
@@ -109,6 +109,6 @@ export async function handleSignin(formData: FormData) {
 }
 
 export async function Logout() {
-  let session = await getSession();
+  const session = await getSession();
   session.destroy();
 }
