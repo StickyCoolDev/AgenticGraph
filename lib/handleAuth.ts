@@ -12,6 +12,7 @@ import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
 import { FirebaseError } from "firebase/app";
+import {Logger} from '@/lib/logger';
 
 const minPasswordLength: number = 8;
 
@@ -65,10 +66,10 @@ export async function handleSignup(formData: FormData) {
     await updateProfile(user.user, { displayName: userName });
   } catch (e) {
     const error = e as FirebaseError;
-    throw new Error("[ERROR] A error happend while signin : " + error.message);
+    throw new Error("A error happend while signin : " + error.message);
   }
   if (user) {
-    console.log("[INFO]: User login sucsesful. Sending email verification.");
+    Logger.info("User login sucsesful. Sending email verification.");
     await sendEmailVerification(user.user);
     const session = await getSession(); // removed as i am getting to much emails
     // Sometimes this email is marked as spam in gmail , so also check the spam tab
@@ -78,7 +79,8 @@ export async function handleSignup(formData: FormData) {
 
     await session.save();
 
-    console.log("[INFO]: data saved to session with iron-session");
+    Logger.info("Data saved to session with iron-session");
+    return { success: true, message: "Sign in successful." };
   }
 }
 
@@ -95,7 +97,9 @@ export async function handleSignin(formData: FormData) {
   try {
     user = await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
+    Logger.error("[ERROR] A error happend while signin" + error)
     throw new Error("[ERROR] A error happend while signin" + error);
+
   }
 
   if (user) {
@@ -111,4 +115,5 @@ export async function handleSignin(formData: FormData) {
 export async function Logout() {
   const session = await getSession();
   session.destroy();
+  Logger.info("Logout success")
 }
