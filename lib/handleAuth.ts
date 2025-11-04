@@ -12,7 +12,8 @@ import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
 import { FirebaseError } from "firebase/app";
-import {Logger} from '@/lib/logger';
+import { Logger } from "@/lib/logger";
+import { redirect } from "next/navigation";
 
 const minPasswordLength: number = 8;
 
@@ -80,6 +81,7 @@ export async function handleSignup(formData: FormData) {
     await session.save();
 
     Logger.info("Data saved to session with iron-session");
+    redirect("message/?title=Login  successful.");
     return { success: true, message: "Sign in successful." };
   }
 }
@@ -97,9 +99,8 @@ export async function handleSignin(formData: FormData) {
   try {
     user = await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    Logger.error("[ERROR] A error happend while signin" + error)
+    Logger.error("[ERROR] A error happend while signin" + error);
     throw new Error("[ERROR] A error happend while signin" + error);
-
   }
 
   if (user) {
@@ -115,5 +116,5 @@ export async function handleSignin(formData: FormData) {
 export async function Logout() {
   const session = await getSession();
   session.destroy();
-  Logger.info("Logout success")
+  Logger.info("Logout success");
 }

@@ -1,9 +1,12 @@
-import { promises as fs } from 'fs';
+import { promises as fs } from "fs";
 
 const getCurrentDateTime = (): string => {
   const now = new Date();
-  const date = now.toLocaleDateString('en-US');
-  const time = now.toLocaleTimeString('en-US', { hour12: false, second: '2-digit' });
+  const date = now.toLocaleDateString("en-US");
+  const time = now.toLocaleTimeString("en-US", {
+    hour12: false,
+    second: "2-digit",
+  });
   return `${date} ${time}`;
 };
 
@@ -23,20 +26,20 @@ export class BaseLogger {
   }
 
   info(message: string): void {
-    this.log('INFO', message);
+    this.log("INFO", message);
   }
 
   warn(message: string): void {
-    this.log('WARN', message);
+    this.log("WARN", message);
   }
 
   error(message: string): void {
-    this.log('ERROR', message);
+    this.log("ERROR", message);
   }
 
   debug(message: string): void {
-    this.log('DEBUG', message);
+    this.log("DEBUG", message);
   }
 }
 
-export const Logger = new BaseLogger('app.logs');
+export const Logger = new BaseLogger("app.logs");
