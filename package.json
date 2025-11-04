@@ -10,6 +10,10 @@
     "format": "prettier --write './**/*.{js,ts,jsx,tsx,json,css}'"
   },
   "dependencies": {
+    "@google/genai": "^1.25.0",
+    "@langchain/community": "^1.0.0",
+    "@langchain/core": "^1.0.2",
+    "@langchain/langgraph": "^1.0.1",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.7",
