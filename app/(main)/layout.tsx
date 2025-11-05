@@ -1,16 +1,8 @@
 import React from "react";
 import { Button } from "../../components/ui/button";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 function NavBar() {
-  let HandleSignupDirect = () => {
-    redirect("/signup");
-  };
-
-  let HandleLoginDirect = () => {
-    redirect("/login");
-  };
-
   return (
     <nav className="sticky top-0 z-10 w-full shadow-md backdrop-blur-sm bg-white/80 dark:bg-gray-900/80">
       <div className="flex items-center justify-between p-4 mx-auto max-w-7xl">
@@ -27,8 +19,12 @@ function NavBar() {
               </Button>
             </li>
           </ul>
-          <Button variant="outline">Signup</Button>
-          <Button>Login</Button>
+          <Button variant="outline" asChild>
+            <Link href="/signup">Signup</Link>
+          </Button>
+          <Button>
+            <Link href="/login">Login</Link>
+          </Button>
         </div>
       </div>
     </nav>

@@ -26,10 +26,16 @@ export async function getSession() {
   return session;
 }
 
-// handling signup
+/**
+ * Async Server Action: Used for handling signup. takes in fromData as:
+ * name : string
+ * email : string
+ * confirm-password : string
+ * password : string
+ */
 export async function handleSignup(formData: FormData) {
   // change all console.error to throw new Error so
-  // we can display ui in the tsx acordingly
+  // we can display UI in the tsx acordingly
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirm-password") as string;
@@ -72,7 +78,8 @@ export async function handleSignup(formData: FormData) {
   if (user) {
     Logger.info("User login sucsesful. Sending email verification.");
     await sendEmailVerification(user.user);
-    const session = await getSession(); // removed as i am getting to much emails
+    const session = await getSession();
+
     // Sometimes this email is marked as spam in gmail , so also check the spam tab
     session.userID = user.user.uid;
     session.loggedIn = true;
@@ -81,8 +88,9 @@ export async function handleSignup(formData: FormData) {
     await session.save();
 
     Logger.info("Data saved to session with iron-session");
-    redirect("message/?title=Login  successful.");
-    return { success: true, message: "Sign in successful." };
+
+    // TODO : create function for handling messages
+    redirect("message/?title=Login successful.");
   }
 }
 
@@ -112,7 +120,9 @@ export async function handleSignin(formData: FormData) {
     await session.save();
   }
 }
-
+/**
+ * Async Server Action: used for handling logout. it removes the cookies with iron-session
+ */
 export async function Logout() {
   const session = await getSession();
   session.destroy();

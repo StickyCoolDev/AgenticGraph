@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react"; // 👈 1. Import useEffect
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,44 +18,17 @@ import { Input } from "@/components/ui/input";
 
 import { handleSignup } from "@/lib/handleAuth";
 import { auth } from "@/lib/firebase/client";
-// 👇 2. Import getRedirectResult
-import {
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
-} from "firebase/auth";
+
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
-  // 👇 3. Add this useEffect hook
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result) {
-          // This is where you get the user info after redirect
-          const user = result.user;
-          const idToken = await user.getIdToken();
-
-          console.info("User details after redirect:", user);
-          console.info("User ID Token:", idToken);
-
-          // You can now redirect them to a dashboard, update state, etc.
-        }
-      } catch (error) {
-        console.error("Google Redirect result error: " + error);
-      }
-    };
-
-    checkAuth();
-  }, []); // The empty array [] means this runs once when the component mounts
-
-  // This function is now correct. It just *starts* the redirect.
+  // oAuth SignIn handling
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithRedirect(auth, provider);
+      const userCredentials = await signInWithPopup(auth, provider);
     } catch (error) {
-      console.error("Google Sign-in error: " + error);
+      throw new Error("Google Sign-in error: " + error);
     }
   };
 
@@ -71,7 +43,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       <CardContent>
         <form action={handleSignup}>
           <FieldGroup>
-            {/* ...your form fields... */}
             <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input
