@@ -1,11 +1,70 @@
-import { EmptyDemo } from "@/app/components/NoAgents";
+"use client";
+import { useState, useCallback } from "react";
+import {
+  ReactFlow,
+  applyNodeChanges,
+  applyEdgeChanges,
+  addEdge,
+  MiniMap,
+  Controls,
+  NodeChange,
+  EdgeChange,
+  Position,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 
-export default function Home() {
+const initialNodes = [
+  {
+    id: "n1",
+    position: { 
+      x: 0,
+      y: 0 
+    },
+    sourcePosition: Position.Right, 
+    data: { 
+      label: "AI"
+    } 
+  },
+  { id: "n2", position: { x: 0, y: 100 }, data: { label: "Tool" } },
+];
+const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
+
+
+type NodeChangeT = NodeChange<{ id: string; position: { x: number; y: number; }; data: { label: string; }; }>
+type EdgeChangeT = EdgeChange<{ id: string; source: string; target: string; }>
+
+export default function Page() {
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+
+  const onNodesChange = useCallback(
+    (changes : NodeChangeT[]) =>
+      setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot,)),
+    [],
+  );
+  const onEdgesChange = useCallback(
+    (changes : EdgeChangeT[]) =>
+      setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot,)),
+    [],
+  );
+  const onConnect = useCallback(
+    (params : any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    [],
+  );
+
   return (
-    <main>
-      <div className="flex justify-center items-center h-screen">
-        <EmptyDemo />
-      </div>
-    </main>
+    <div style={{ width: "95vw", height: "95vh" }}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        fitView
+      >
+        <MiniMap nodeStrokeWidth={3} zoomable pannable />
+        <Controls />
+      </ReactFlow>
+    </div>
   );
 }
