@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,8 +17,21 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { handleSignup } from "@/lib/handleAuth";
+import { auth } from "@/lib/firebase/client";
+
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+  // oAuth SignIn handling
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredentials = await signInWithPopup(auth, provider);
+    } catch (error) {
+      throw new Error("Google Sign-in error: " + error);
+    }
+  };
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -74,7 +89,11 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             <FieldGroup>
               <Field>
                 <Button type="submit">Create Account</Button>
-                <Button variant="outline" type="button">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                >
                   Sign up with Google
                 </Button>
                 <FieldDescription className="px-6 text-center">

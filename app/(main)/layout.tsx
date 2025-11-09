@@ -1,6 +1,6 @@
 import React from "react";
-import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
+import Link from "next/link";
 
 function NavBar() {
   return (
@@ -19,8 +19,12 @@ function NavBar() {
               </Button>
             </li>
           </ul>
-          <Button variant="outline">Signup</Button>
-          <Button>Login</Button>
+          <Button variant="outline" asChild>
+            <Link href="/signup">Signup</Link>
+          </Button>
+          <Button>
+            <Link href="/login">Login</Link>
+          </Button>
         </div>
       </div>
     </nav>

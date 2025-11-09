@@ -12,8 +12,10 @@ import { getIronSession } from "iron-session";
 import { sessionOptions, SessionData } from "@/lib/session";
 import { cookies } from "next/headers";
 import { FirebaseError } from "firebase/app";
+import { Logger } from "@/lib/logger";
+import { redirect } from "next/navigation";
 
-let minPasswordLength: number = 8;
+const minPasswordLength: number = 8;
 
 export async function getSession() {
   const cookieStore = await cookies();
@@ -24,10 +26,16 @@ export async function getSession() {
   return session;
 }
 
-// handling signup
+/**
+ * Async Server Action: Used for handling signup. takes in fromData as:
+ * name : string
+ * email : string
+ * confirm-password : string
+ * password : string
+ */
 export async function handleSignup(formData: FormData) {
   // change all console.error to throw new Error so
-  // we can display ui in the tsx acordingly
+  // we can display UI in the tsx acordingly
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirm-password") as string;
@@ -65,12 +73,13 @@ export async function handleSignup(formData: FormData) {
     await updateProfile(user.user, { displayName: userName });
   } catch (e) {
     const error = e as FirebaseError;
-    throw new Error("[ERROR] A error happend while signin : " + error.message);
+    throw new Error("A error happend while signin : " + error.message);
   }
   if (user) {
-    console.log("[INFO]: User login sucsesful. Sending email verification.");
+    Logger.info("User login sucsesful. Sending email verification.");
     await sendEmailVerification(user.user);
-    const session = await getSession(); // removed as i am getting to much emails
+    const session = await getSession();
+
     // Sometimes this email is marked as spam in gmail , so also check the spam tab
     session.userID = user.user.uid;
     session.loggedIn = true;
@@ -78,7 +87,10 @@ export async function handleSignup(formData: FormData) {
 
     await session.save();
 
-    console.log("[INFO]: data saved to session with iron-session");
+    Logger.info("Data saved to session with iron-session");
+
+    // TODO : create function for handling messages
+    redirect("message/?title=Login successful.");
   }
 }
 
@@ -95,6 +107,7 @@ export async function handleSignin(formData: FormData) {
   try {
     user = await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
+    Logger.error("[ERROR] A error happend while signin" + error);
     throw new Error("[ERROR] A error happend while signin" + error);
   }
 
@@ -107,8 +120,11 @@ export async function handleSignin(formData: FormData) {
     await session.save();
   }
 }
-
+/**
+ * Async Server Action: used for handling logout. it removes the cookies with iron-session
+ */
 export async function Logout() {
-  let session = await getSession();
+  const session = await getSession();
   session.destroy();
+  Logger.info("Logout success");
 }

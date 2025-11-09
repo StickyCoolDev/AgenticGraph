@@ -10,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import Link from "next/link";
 
 export function EmptyDemo() {
   return (
@@ -26,10 +27,10 @@ export function EmptyDemo() {
       </EmptyHeader>
       <EmptyContent>
         <div className="flex gap-2">
-          <Button>Create New Agent</Button>
+          <Button asChild>
+            <Link href="">Create New Agent</Link>
+          </Button>
           <Button variant="outline">Import Agent</Button>
-          <br />
-          <Button variant="outline">Check Marketplace?</Button>
         </div>
       </EmptyContent>
       <Button
@@ -38,9 +39,9 @@ export function EmptyDemo() {
         className="text-muted-foreground"
         size="sm"
       >
-        <a href="#">
+        <Link href="#">
           Learn More <ArrowUpRightIcon />
-        </a>
+        </Link>
       </Button>
     </Empty>
   );
