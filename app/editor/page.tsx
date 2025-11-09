@@ -10,8 +10,11 @@ import {
   NodeChange,
   EdgeChange,
   Position,
+  Panel,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { Button } from "@/components/ui/button";
+import { IconArrowsMaximize } from "@tabler/icons-react";
 
 const initialNodes = [
   {
@@ -84,6 +87,11 @@ export default function Page() {
       >
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Controls />
+        <Panel position="top-right">
+          <Button onClick={toogleFullscreen}>
+            <IconArrowsMaximize />
+          </Button>
+        </Panel>
       </ReactFlow>
     </div>
   );
