@@ -14,6 +14,8 @@ import { cookies } from "next/headers";
 import { FirebaseError } from "firebase/app";
 import { Logger } from "@/lib/logger";
 import { redirect } from "next/navigation";
+import { toast } from "sonner-ssr";
+import { revalidatePath } from "next/cache";
 
 const minPasswordLength: number = 8;
 
@@ -57,7 +59,7 @@ export async function handleSignup(formData: FormData) {
   }
 
   if (password.length < minPasswordLength) {
-    throw new Error(
+    toast(
       `Password has to be more than or equal to ${minPasswordLength} charecter.`,
     );
   }
@@ -73,7 +75,11 @@ export async function handleSignup(formData: FormData) {
     await updateProfile(user.user, { displayName: userName });
   } catch (e) {
     const error = e as FirebaseError;
-    throw new Error("A error happend while signin : " + error.message);
+    if (error.code == "auth/weak-password") {
+      toast("Password is weak");
+    }
+    console.log(error.code);
+    //throw new Error("A error happend while signin : " + error.code);
   }
   if (user) {
     Logger.info("User login sucsesful. Sending email verification.");

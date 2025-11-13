@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/empty";
 import Link from "next/link";
 
-export function EmptyDemo() {
+export function EmptyProject() {
   return (
     <Empty>
       <EmptyHeader>

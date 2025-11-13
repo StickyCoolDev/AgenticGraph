@@ -11,10 +11,13 @@ import {
   EdgeChange,
   Position,
   Panel,
+  Node,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Button } from "@/components/ui/button";
 import { IconArrowsMaximize } from "@tabler/icons-react";
+import StartNode from "@/components/nodes/Start";
+import LLMNode from "@/components/nodes/LLM";
 
 const initialNodes = [
   {
@@ -24,18 +27,40 @@ const initialNodes = [
       y: 0,
     },
     sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    type: "startNode",
     data: {
       label: "AI",
     },
   },
-  { id: "n2", position: { x: 0, y: 100 }, data: { label: "Tool" } },
+  {
+    id: "n2",
+    position: {
+      x: 100,
+      y: 0,
+    },
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    type: "llmNode",
+    data: {
+      label: "Tool",
+    },
+  },
 ];
+
 const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
+
+const nodeType = {
+  startNode: StartNode,
+  llmNode: LLMNode,
+};
 
 type NodeChangeT = NodeChange<{
   id: string;
   position: { x: number; y: number };
   data: { label: string };
+  sourcePosition: Position;
+  targetPosition: Position;
 }>;
 type EdgeChangeT = EdgeChange<{ id: string; source: string; target: string }>;
 
@@ -43,16 +68,21 @@ export default function Page() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
+  const onNodeClick = useCallback((_event: any, node: Node) => {
+    alert(node.id);
+  }, []);
   const onNodesChange = useCallback(
     (changes: NodeChangeT[]) =>
       setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
     [],
   );
+
   const onEdgesChange = useCallback(
     (changes: EdgeChangeT[]) =>
       setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
     [],
   );
+
   const onConnect = useCallback(
     (params: any) =>
       setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
@@ -75,7 +105,7 @@ export default function Page() {
   return (
     <div
       ref={MainContainerRef as Ref<HTMLDivElement>}
-      style={{ width: "95vw", height: "95vh" }}
+      className="w-screen h-screen bg-white"
     >
       <ReactFlow
         nodes={nodes}
@@ -83,12 +113,14 @@ export default function Page() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeType}
+        onNodeClick={onNodeClick}
         fitView
       >
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Controls />
         <Panel position="top-right">
-          <Button onClick={toogleFullscreen}>
+          <Button onClick={toogleFullscreen} variant="outline">
             <IconArrowsMaximize />
           </Button>
         </Panel>
@@ -96,3 +128,4 @@ export default function Page() {
     </div>
   );
 }
+

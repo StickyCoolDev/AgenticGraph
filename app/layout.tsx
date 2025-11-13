@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ToasterListener from "./components/ToastListener";
+import { ToasterServerRegister } from "sonner-ssr";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "AgenticGraph",
-  description: "a open source ai agent builder made with Next.js",
+  description: "An open source AI agent builder made with Next.js",
 };
 
 export default function RootLayout({
@@ -28,6 +30,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <ToasterServerRegister />
+        <ToasterListener />
       </body>
     </html>
   );

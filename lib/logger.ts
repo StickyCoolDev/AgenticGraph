@@ -2,10 +2,10 @@ import { promises as fs } from "fs";
 
 const getCurrentDateTime = (): string => {
   const now = new Date();
-  const date = now.toLocaleDateString("en-US");
+  const date = now.toLocaleDateString("en-US", { timeZone: process.env.TZ });
   const time = now.toLocaleTimeString("en-US", {
     hour12: false,
-    second: "2-digit",
+    timeZone: process.env.TZ,
   });
   return `${date} ${time}`;
 };
@@ -42,4 +42,5 @@ export class BaseLogger {
   }
 }
 
-export const Logger = new BaseLogger("app.logs");
+export const BaseLoggerFilePath: string = "app.logs";
+export const Logger = new BaseLogger(BaseLoggerFilePath);

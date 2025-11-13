@@ -1,6 +1,9 @@
 import { Separator } from "@/components/ui/separator";
+import { redirect } from "next/navigation";
+import { toast } from "sonner-ssr";
 
-export default function Home() {
+export default function Page() {
+  toast("ududi");
   return (
     <main className="p-1">
       <h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
