@@ -3,10 +3,9 @@ import { Handle, Position } from "@xyflow/react";
 import { IconRobot } from "@tabler/icons-react";
 import { LLMProviders } from "@/app/constants/ai";
 
-
 export interface LLMNodeProps {
-  llmProvider : LLMProviders,
-  model : string,
+  llmProvider: LLMProviders;
+  model: string;
 }
 
 const LLMNode = () => {

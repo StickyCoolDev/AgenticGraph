@@ -18,6 +18,14 @@ import { Button } from "@/components/ui/button";
 import { IconArrowsMaximize } from "@tabler/icons-react";
 import StartNode from "@/components/nodes/Start";
 import LLMNode from "@/components/nodes/LLM";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const initialNodes = [
   {
@@ -67,7 +75,8 @@ type EdgeChangeT = EdgeChange<{ id: string; source: string; target: string }>;
 export default function Page() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
-
+  const [nodeEditorSheetVisibility, setnodeEditorSheetVisibility] =
+    useState(false);
   const onNodeClick = useCallback((_event: any, node: Node) => {
     alert(node.id);
   }, []);
@@ -119,13 +128,28 @@ export default function Page() {
       >
         <MiniMap nodeStrokeWidth={3} zoomable pannable />
         <Controls />
+
         <Panel position="top-right">
           <Button onClick={toogleFullscreen} variant="outline">
             <IconArrowsMaximize />
           </Button>
         </Panel>
+
+        <Panel position="center-right">
+          <Dialog>
+            <DialogTrigger>Open</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Are you absolutely sure?</DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </Panel>
       </ReactFlow>
     </div>
   );
 }
-
