@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type { ComponentProps } from "react"
-import { useCallback } from "react"
-import { ArrowDownIcon } from "lucide-react"
-import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom"
+import type { ComponentProps } from "react";
+import { useCallback } from "react";
+import { ArrowDownIcon } from "lucide-react";
+import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-export type ConversationProps = ComponentProps<typeof StickToBottom>
+export type ConversationProps = ComponentProps<typeof StickToBottom>;
 
 export const Conversation = ({ className, ...props }: ConversationProps) => (
   <StickToBottom
@@ -18,27 +18,27 @@ export const Conversation = ({ className, ...props }: ConversationProps) => (
     role="log"
     {...props}
   />
-)
+);
 
 export type ConversationContentProps = ComponentProps<
   typeof StickToBottom.Content
->
+>;
 
 export const ConversationContent = ({
   className,
   ...props
 }: ConversationContentProps) => (
   <StickToBottom.Content className={cn("p-4", className)} {...props} />
-)
+);
 
 export type ConversationEmptyStateProps = Omit<
   ComponentProps<"div">,
   "title"
 > & {
-  title?: React.ReactNode
-  description?: React.ReactNode
-  icon?: React.ReactNode
-}
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: React.ReactNode;
+};
 
 export const ConversationEmptyState = ({
   className,
@@ -51,7 +51,7 @@ export const ConversationEmptyState = ({
   <div
     className={cn(
       "flex size-full flex-col items-center justify-center gap-3 p-8 text-center",
-      className
+      className,
     )}
     {...props}
   >
@@ -67,26 +67,26 @@ export const ConversationEmptyState = ({
       </>
     )}
   </div>
-)
+);
 
-export type ConversationScrollButtonProps = ComponentProps<typeof Button>
+export type ConversationScrollButtonProps = ComponentProps<typeof Button>;
 
 export const ConversationScrollButton = ({
   className,
   ...props
 }: ConversationScrollButtonProps) => {
-  const { isAtBottom, scrollToBottom } = useStickToBottomContext()
+  const { isAtBottom, scrollToBottom } = useStickToBottomContext();
 
   const handleScrollToBottom = useCallback(() => {
-    scrollToBottom()
-  }, [scrollToBottom])
+    scrollToBottom();
+  }, [scrollToBottom]);
 
   return (
     !isAtBottom && (
       <Button
         className={cn(
           "bg-background dark:bg-background absolute bottom-4 left-[50%] translate-x-[-50%] rounded-full shadow-md",
-          className
+          className,
         )}
         onClick={handleScrollToBottom}
         size="icon"
@@ -97,5 +97,5 @@ export const ConversationScrollButton = ({
         <ArrowDownIcon className="size-4" />
       </Button>
     )
-  )
-}
+  );
+};
